@@ -94,7 +94,7 @@ class Game:
     def play(self):
         ''' Game Play Method '''
         try:
-            self.user_player.hand = str(self.ent_user_player.get()).lower()  # TODO
+            self.user_player.hand = str(self.ent_user_player.get()).lower()  
         except ValueError:
             msgbox.showinfo("Hey hey", 'Please just type: rock, paper or scissors')
             return None
@@ -107,9 +107,23 @@ class Game:
         elif self.user_player > self.cpu_player:
             self.__computer_ent_handling(self.cpu_player.hand)
             self.lbl_result.config(text ='You won this round')
+            self.user_player + 1
+            if self.check_score(self.user_player):
+                if msgbox.askyesno('You Won!', 'Do you want to play again?'):
+                    self.user_player.score, self.cpu_player.score = 0, 0
+                    return self.reset()
+                else: 
+                    return self.exitt()
         elif self.user_player < self.cpu_player:
             self.__computer_ent_handling(self.cpu_player.hand)
             self.lbl_result.config(text ='computer won this round')
+            self.cpu_player + 1
+            if self.check_score(self.cpu_player):
+                if msgbox.askyesno('Game Over - Cpu Won', 'Do you want to play again?'):
+                    self.user_player.score, self.cpu_player.score = 0, 0
+                    return self.reset()
+                else: 
+                    return self.exitt()
         else:
             pass
 
@@ -122,9 +136,11 @@ class Game:
         self.title('Good by!')
         self.after(500, self.destroy)
 
-    def check_score(self, o: object) -> int:
-        ''' Returns score of given objects '''
-        return o.score
+    def check_score(self, o: object) -> bool:
+        ''' Returns if score reached 3 that given object '''
+        if o.score == 3:
+            return True
+        else: return False
 
 
 class Rps(tk.Tk, Game):
