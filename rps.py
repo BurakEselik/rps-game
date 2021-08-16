@@ -1,6 +1,7 @@
 # rock, paper, scissors game
 from random import choice
 import tkinter as tk
+import tkinter.messagebox as msgbox
 
 
 class Player:
@@ -92,30 +93,34 @@ class Game:
 
     def play(self):
         ''' Game Play Method '''
-
-        self.user_player.hand = str(self.ent_user_player.get()).lower()  # TODO
+        try:
+            self.user_player.hand = str(self.ent_user_player.get()).lower()  # TODO
+        except ValueError:
+            msgbox.showinfo("Hey hey", 'Please just type: rock, paper or scissors')
+            return None
         self.cpu_player.hand = choice(self.cpu_player.hands)
 
         if self.user_player == self.cpu_player:
 
             self.__computer_ent_handling(self.cpu_player.hand)
-            self.lbl_result['text'] = 'This round is equal'
+            self.lbl_result.config(text ='This round is equal')
         elif self.user_player > self.cpu_player:
             self.__computer_ent_handling(self.cpu_player.hand)
-            self.lbl_result['text'] = 'You won this round'
+            self.lbl_result.config(text ='You won this round')
         elif self.user_player < self.cpu_player:
             self.__computer_ent_handling(self.cpu_player.hand)
-            self.lbl_result['text'] = 'computer won this round'
+            self.lbl_result.config(text ='computer won this round')
         else:
             pass
 
     def reset(self):
-        self.lbl_result['text'] = ' '
+        self.lbl_result.config(text ='')
         self.ent_comp_player.delete(0, tk.END)
         self.ent_user_player.delete(0, tk.END)
 
     def exitt(self):
-        self.destroy()
+        self.title('Good by!')
+        self.after(500, self.destroy)
 
     def check_score(self, o: object) -> int:
         ''' Returns score of given objects '''
@@ -153,7 +158,7 @@ class Rps(tk.Tk, Game):
         self.btn_for_play.place(x=215, y=100)
 
         self.lbl_result = tk.Label(
-            text='test', bg='black', fg='white', width=30)
+            text=' ', bg='black', fg='white', width=30)
         self.lbl_result.place(x=150, y=160)
 
         self.btn_exit = tk.Button(text='Exit', command=self.exitt)
