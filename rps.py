@@ -66,7 +66,13 @@ class Player:
 
 
 class Game:
-    pass
+
+    def __init__(self) -> None:
+
+        pass
+
+    def play(self):
+        pass
 
 class Rps(tk.Tk):
 
@@ -74,15 +80,41 @@ class Rps(tk.Tk):
         super().__init__()
 
         self.title('Rock-Paper-Scissors GAME')
+        self.resizable(width=False, height=False)
+        self.geometry("550x250")
+    
+
+        self.lbl_user_player = tk.Label(self, text='YOU', fg='green')
+        self.lbl_user_player.place(x=40, y=30)
+
+        self.ent_user_player = tk.Entry(self, width=20)
+        self.ent_user_player.place(x=40, y=55)
+
+        self.lbl_comp_player = tk.Label(self, text='COMPUTER', fg='red')
+        self.lbl_comp_player.place(x=420, y=30)
+
+        self.ent_comp_player = tk.Entry(self, width=20)
+        self.ent_comp_player.place(x=335, y=55) 
+
+        self.btn_for_play = tk.Button(  text="PLAY",
+                                        width=10,
+                                        height=2,
+                                        #bg="blue",
+                                        #fg="yellow",
+                                    )
+
+        self.btn_for_play.place(x=215, y=100)
+
+        self.lbl_result = tk.Label(text='test', bg='black', fg='white', width=30)
+        self.lbl_result.place(x=150, y=160)
+
+        self.btn_exit = tk.Button(text='Exit')
+        self.btn_exit.place(x=160, y=200)
+
+        self.btn_reset = tk.Button(text='Reset')
+        self.btn_reset.place(x=320, y=200)
 
 
 if __name__ == '__main__':
-    #rps = Rps()
-    #rps.mainloop()
-    a = Player('a')
-    b = Player('b')
-
-    a.hand = 'rock'
-    b.hand = 'rock'
-    a + [1,2]
-    print(a)
+    rps = Rps()
+    rps.mainloop()
