@@ -91,7 +91,7 @@ class Game:
         self.ent_comp_player.delete(0, tk.END)
         self.ent_comp_player.insert(0, hand)
 
-    def play(self):
+    def play(self, *args):
         ''' Game Play Method '''
         try:
             self.user_player.hand = str(self.ent_user_player.get()).lower()  
@@ -172,6 +172,8 @@ class Rps(tk.Tk, Game):
                                       )
 
         self.btn_for_play.place(x=215, y=100)
+
+        self.bind('<Return>', self.play)
 
         self.lbl_result = tk.Label(
             text=' ', bg='black', fg='white', width=30)
