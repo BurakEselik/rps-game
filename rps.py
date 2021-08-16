@@ -127,12 +127,12 @@ class Game:
         else:
             pass
 
-    def reset(self):
+    def reset(self, *args):
         self.lbl_result.config(text ='')
         self.ent_comp_player.delete(0, tk.END)
         self.ent_user_player.delete(0, tk.END)
 
-    def exitt(self):
+    def exitt(self, *args):
         self.title('Good by!')
         self.after(500, self.destroy)
 
@@ -173,8 +173,11 @@ class Rps(tk.Tk, Game):
 
         self.btn_for_play.place(x=215, y=100)
 
+        #to launch this add the *args functions paramaters
         self.bind('<Return>', self.play)
-
+        self.bind('reset', self.reset)
+        self.bind('exit', self.exitt)
+        
         self.lbl_result = tk.Label(
             text=' ', bg='black', fg='white', width=30)
         self.lbl_result.place(x=150, y=160)
