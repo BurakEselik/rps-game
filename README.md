@@ -9,6 +9,7 @@ Rock, paper, scissors GUI game with tkinter.
 
 ## How to launch?
 Download the codes of this program on GitHub then type:
+
     python3 rps.py
 
 ## Here is the SS belong the Game:
