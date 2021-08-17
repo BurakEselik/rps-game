@@ -109,33 +109,48 @@ class Game:
             self.__computer_ent_handling(self.cpu_player.hand)
             self.lbl_result.config(text ='You won this round')
             self.user_player + 1
+            
+            self.usr_score_lbl.config(text=self.get_current_score(self.user_player))
             if self.check_score(self.user_player):
                 if msgbox.askyesno('You Won!', 'Do you want to play again?'):
-                    self.user_player.score, self.cpu_player.score = 0, 0
-                    return self.reset()
+                    
+                    return self.reset(score=True)
                 else: 
                     return self.exitt()
         elif self.user_player < self.cpu_player:
             self.__computer_ent_handling(self.cpu_player.hand)
             self.lbl_result.config(text ='computer won this round')
             self.cpu_player + 1
+            self.cpu_score_lbl.config(text=self.get_current_score(self.cpu_player))
             if self.check_score(self.cpu_player):
                 if msgbox.askyesno('Game Over - Cpu Won', 'Do you want to play again?'):
-                    self.user_player.score, self.cpu_player.score = 0, 0
-                    return self.reset()
+                    
+                    return self.reset(score=True)
                 else: 
                     return self.exitt()
         else:
             pass
 
-    def reset(self, *args):
+    def reset(self, score=False, *args):
         self.lbl_result.config(text ='')
+
         self.ent_comp_player.delete(0, tk.END)
         self.ent_user_player.delete(0, tk.END)
+        def inner():
+            self.user_player.score, self.cpu_player.score = 0, 0
+            self.usr_score_lbl.config(text='0')
+            self.cpu_score_lbl.config(text='0')
+
+        if score == True:
+            inner()
+        #else: return self.reset
 
     def exitt(self, *args):
         self.title('Good by!')
         self.after(500, self.destroy)
+
+    def get_current_score(self, o: object) -> int:
+        return o.score
 
     def check_score(self, o: object) -> bool:
         ''' Returns if score reached 3 that given object '''
@@ -153,6 +168,13 @@ class Rps(tk.Tk, Game):
         self.title('Rock-Paper-Scissors GAME')
         self.resizable(width=False, height=False)
         self.geometry("550x250")
+
+        self.score_frame = tk.Frame(self, bg='yellow', height=45, width=116)
+        self.score_frame.place(x=212, y=45)
+        self.usr_score_lbl = tk.Label(master=self.score_frame, text='0', bg='grey', width=7, height=2)
+        self.usr_score_lbl.grid(row=0, column=0, sticky='e')
+        self.cpu_score_lbl = tk.Label(master=self.score_frame, text='0', bg='grey', width=7, height=2)
+        self.cpu_score_lbl.grid(row=0, column=1)
 
         self.lbl_user_player = tk.Label(self, text='YOU', fg='green')
         self.lbl_user_player.place(x=40, y=30)
