@@ -14,6 +14,6 @@ Download the codes of this program on GitHub then type:
 
 ## Here is the SS belong the Game:
 
-![](images/rps_game.png)
+![](images/rps_game_.png)
 
 

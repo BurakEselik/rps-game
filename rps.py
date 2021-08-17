@@ -2,6 +2,7 @@
 from random import choice
 import tkinter as tk
 import tkinter.messagebox as msgbox
+from typing import Text
 
 
 class Player:
@@ -94,56 +95,68 @@ class Game:
     def play(self, *args):
         ''' Game Play Method '''
         try:
-            self.user_player.hand = str(self.ent_user_player.get()).lower()  
+            self.user_player.hand = str(self.ent_user_player.get()).lower()
         except ValueError:
-            msgbox.showinfo("Hey hey", 'Please just type: rock, paper or scissors')
+            msgbox.showinfo(
+                "Hey hey", 'Please just type: rock, paper or scissors')
             self.reset()
             return None
         self.cpu_player.hand = choice(self.cpu_player.hands)
 
         if self.user_player == self.cpu_player:
-
             self.__computer_ent_handling(self.cpu_player.hand)
-            self.lbl_result.config(text ='This round is equal')
+            self.lbl_result.config(text='This round is equal')
         elif self.user_player > self.cpu_player:
             self.__computer_ent_handling(self.cpu_player.hand)
-            self.lbl_result.config(text ='You won this round')
+            self.lbl_result.config(text='You won this round')
             self.user_player + 1
-            
-            self.usr_score_lbl.config(text=self.get_current_score(self.user_player))
+            self.config_scoreboard()
             if self.check_score(self.user_player):
                 if msgbox.askyesno('You Won!', 'Do you want to play again?'):
-                    
                     return self.reset(score=True)
-                else: 
+                else:
                     return self.exitt()
         elif self.user_player < self.cpu_player:
             self.__computer_ent_handling(self.cpu_player.hand)
-            self.lbl_result.config(text ='computer won this round')
+            self.lbl_result.config(text='computer won this round')
             self.cpu_player + 1
-            self.cpu_score_lbl.config(text=self.get_current_score(self.cpu_player))
+            self.config_scoreboard()
             if self.check_score(self.cpu_player):
                 if msgbox.askyesno('Game Over - Cpu Won', 'Do you want to play again?'):
-                    
+
                     return self.reset(score=True)
-                else: 
+                else:
                     return self.exitt()
         else:
             pass
 
+    def config_scoreboard(self):
+        usr_bg, cpu_bg = str(), str()
+        usr_scr = self.get_current_score(self.user_player)
+        cpu_scr = self.get_current_score(self.cpu_player)
+        if self.user_player.score == self.cpu_player.score:
+            usr_bg, cpu_bg = 'green', 'green'
+        elif self.user_player.score > self.cpu_player.score:
+            usr_bg, cpu_bg = 'green', 'red'
+        else:
+            usr_bg, cpu_bg = 'red', 'green'
+        self.usr_score_lbl.config(text=str(usr_scr), bg=usr_bg)
+        self.cpu_score_lbl.config(text=str(cpu_scr), bg=cpu_bg)
+
     def reset(self, score=False, *args):
-        self.lbl_result.config(text ='')
+        self.lbl_result.config(text='')
 
         self.ent_comp_player.delete(0, tk.END)
         self.ent_user_player.delete(0, tk.END)
+
         def inner():
             self.user_player.score, self.cpu_player.score = 0, 0
-            self.usr_score_lbl.config(text='0')
-            self.cpu_score_lbl.config(text='0')
+            self.usr_score_lbl.config(text='0', bg='grey')
+            self.cpu_score_lbl.config(text='0', bg='grey')
 
         if score == True:
             inner()
-        #else: return self.reset
+        # else: return self.reset
 
     def exitt(self, *args):
         self.title('Good by!')
@@ -156,7 +169,8 @@ class Game:
         ''' Returns if score reached 3 that given object '''
         if o.score == 3:
             return True
-        else: return False
+        else:
+            return False
 
 
 class Rps(tk.Tk, Game):
@@ -171,9 +185,11 @@ class Rps(tk.Tk, Game):
 
         self.score_frame = tk.Frame(self, bg='yellow', height=45, width=116)
         self.score_frame.place(x=212, y=45)
-        self.usr_score_lbl = tk.Label(master=self.score_frame, text='0', bg='grey', width=7, height=2)
+        self.usr_score_lbl = tk.Label(
+            master=self.score_frame, text='0', bg='grey', width=7, height=2)
         self.usr_score_lbl.grid(row=0, column=0, sticky='e')
-        self.cpu_score_lbl = tk.Label(master=self.score_frame, text='0', bg='grey', width=7, height=2)
+        self.cpu_score_lbl = tk.Label(
+            master=self.score_frame, text='0', bg='grey', width=7, height=2)
         self.cpu_score_lbl.grid(row=0, column=1)
 
         self.lbl_user_player = tk.Label(self, text='YOU', fg='green')
@@ -196,11 +212,11 @@ class Rps(tk.Tk, Game):
 
         self.btn_for_play.place(x=215, y=100)
 
-        #to launch this add the *args functions paramaters
+        # to launch this add the *args functions paramaters
         self.bind('<Return>', self.play)
         self.bind('reset', self.reset)
         self.bind('exit', self.exitt)
-        
+
         self.lbl_result = tk.Label(
             text=' ', bg='black', fg='white', width=30)
         self.lbl_result.place(x=150, y=160)
@@ -213,5 +229,5 @@ class Rps(tk.Tk, Game):
 
 
 if __name__ == '__main__':
-    rps = Rps(className = 'rps-game')
+    rps = Rps(className='rps-game')
     rps.mainloop()
