@@ -97,6 +97,7 @@ class Game:
             self.user_player.hand = str(self.ent_user_player.get()).lower()  
         except ValueError:
             msgbox.showinfo("Hey hey", 'Please just type: rock, paper or scissors')
+            self.reset()
             return None
         self.cpu_player.hand = choice(self.cpu_player.hands)
 
@@ -145,8 +146,8 @@ class Game:
 
 class Rps(tk.Tk, Game):
 
-    def __init__(self) -> None:
-        tk.Tk.__init__(self)
+    def __init__(self, className) -> None:
+        tk.Tk.__init__(self, className=className)
         Game.__init__(self)
 
         self.title('Rock-Paper-Scissors GAME')
@@ -190,5 +191,5 @@ class Rps(tk.Tk, Game):
 
 
 if __name__ == '__main__':
-    rps = Rps()
+    rps = Rps(className = 'rps-game')
     rps.mainloop()
