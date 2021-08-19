@@ -2,7 +2,6 @@
 from random import choice
 import tkinter as tk
 import tkinter.messagebox as msgbox
-from typing import Text
 
 
 class Player:
