@@ -182,6 +182,9 @@ class Rps(tk.Tk, Game):
         self.resizable(width=False, height=False)
         self.geometry("550x250")
 
+        self.icon =  tk.PhotoImage(file='paper.png')
+        self.iconphoto(False, self.icon)
+
         self.score_frame = tk.Frame(self, bg='yellow', height=45, width=116)
         self.score_frame.place(x=212, y=45)
         self.usr_score_lbl = tk.Label(
